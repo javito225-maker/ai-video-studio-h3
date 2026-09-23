@@ -2,28 +2,16 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-echo "=== AI Video Studio H3 V1 installer ==="
+echo "=== AI Video Studio H3 V1 installer — Ubuntu 26.04 / Python 3.14 ==="
 
-PYTHON=""
-for candidate in python3.13 python3.12 python3.11 python3; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    ver=$("$candidate" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
-    major=${ver%%.*}; minor=${ver##*.}
-    if [ "$major" -eq 3 ] && [ "$minor" -ge 11 ] && [ "$minor" -le 13 ]; then
-      PYTHON="$candidate"
-      break
-    fi
-  fi
-done
-
-if [ -z "$PYTHON" ]; then
-  echo "Python 3.11, 3.12 ou 3.13 est requis pour cette V1."
-  echo "Ton Python par défaut peut être 3.14; il ne sera pas utilisé pour le studio."
-  echo "Installe Python 3.13 avec venv puis relance ./install.sh."
+PYTHON=python3
+command -v "$PYTHON" >/dev/null 2>&1 || {
+  echo "Python 3 est requis."
   exit 1
-fi
+}
 
-echo "Python sélectionné: $PYTHON ($($PYTHON --version))"
+ver=$("$PYTHON" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+echo "Python détecté: $("$PYTHON" --version)"
 
 command -v ffmpeg >/dev/null 2>&1 || {
   echo "Installation FFmpeg..."
@@ -38,12 +26,29 @@ fi
 
 "$PYTHON" -m venv .venv
 . .venv/bin/activate
+
 python -m pip install --upgrade pip setuptools wheel
+
+echo "Installation des dépendances binaires..."
 python -m pip install --only-binary=:all: -r requirements.txt || {
-  echo "Installation binaire impossible. Vérifie: .venv/bin/python --version"
+  echo
+  echo "ERREUR: une dépendance compatible avec Python $ver n a pas de wheel binaire."
+  echo "Python utilisé: $(python --version)"
+  echo "Pip utilisé: $(python -m pip --version)"
   exit 1
 }
 
+echo
+echo "Vérification des imports..."
+python - <<'PY'
+import fastapi, uvicorn, httpx, pydantic
+print("FastAPI:", fastapi.__version__)
+print("Uvicorn:", uvicorn.__version__)
+print("HTTPX:", httpx.__version__)
+print("Pydantic:", pydantic.__version__)
+PY
+
+echo
 echo "V1 installée avec succès."
 echo "ComfyUI attendu: http://127.0.0.1:8188"
 echo "Ollama attendu:  http://127.0.0.1:11434"
