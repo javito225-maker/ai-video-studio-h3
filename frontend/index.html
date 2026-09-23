@@ -1,16 +1,9 @@
-<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Video Studio H3</title><link rel="stylesheet" href="/style.css"></head>
-<body><main>
-<header><div><h1>AI Video Studio <span>H3</span></h1><p>MiniMax H3 local · ComfyUI · Ollama · FFmpeg</p></div><button id="health">Vérifier système</button></header>
-<section class="status" id="status">Système non vérifié.</section>
-<section class="grid">
-<div class="card"><h2>Projet</h2><label>Nom</label><input id="name" value="Mon épisode">
-<label>Format</label><select><option>9:16 Vertical</option><option>16:9 Horizontal</option></select>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Video Studio H3</title><link rel="stylesheet" href="/style.css"></head>
+<body><main><header><div><h1>AI Video Studio <span>H3</span></h1><p>MiniMax H3 local · ComfyUI · Ollama · FFmpeg</p></div><button id="health">Vérifier système</button></header>
+<section class="status" id="status">Système non vérifié.</section><section class="grid"><div class="card"><h2>Projet</h2><label>Nom</label><input id="name" value="Mon épisode">
+<label>Format</label><select id="format"><option value="9:16">9:16 Vertical</option><option value="16:9">16:9 Horizontal</option></select>
 <label>Profil H3</label><select id="profile"><option>Draft</option><option selected>Balanced</option><option>Quality</option></select></div>
-<div class="card wide"><h2>AI Director</h2><label>Histoire / idée</label>
-<textarea id="story" placeholder="Décris l'épisode, les personnages et l'action..."></textarea>
-<button class="primary" id="plan">Créer les 4 séquences</button></div>
-</section>
+<div class="card wide"><h2>AI Director</h2><label>Histoire / idée</label><textarea id="story" placeholder="Décris l'épisode, les personnages et l'action..."></textarea><button class="primary" id="plan">Créer les 4 séquences</button></div></section>
 <section class="card"><h2>Séquences H3</h2><div id="sequences" class="empty">Les séquences générées par Llama apparaîtront ici.</div></section>
+<section class="card"><h2>File de génération</h2><div id="jobs" class="empty">Aucune génération.</div></section>
 </main><script src="/app.js"></script></body></html>
