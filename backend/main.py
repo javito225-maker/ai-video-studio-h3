@@ -9,7 +9,7 @@ from .comfyui import ComfyUIClient, build_h3_workflow, workflow_exists
 
 ROOT = Path(__file__).resolve().parent.parent
 WORKFLOW = ROOT / "workflows" / "h3_t2v.json"
-app = FastAPI(title="AI Video Studio H3", version="1.1.1")
+app = FastAPI(title="AI Video Studio H3", version="1.2.0")
 comfy = ComfyUIClient(os.getenv("COMFY_URL", "http://127.0.0.1:8188"))
 
 class PlanRequest(BaseModel):
