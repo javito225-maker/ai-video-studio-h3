@@ -54,7 +54,7 @@ def build_h3_workflow(path,prompt,aspect_ratio="9:16",profile="Balanced",duratio
         if not isinstance(node,dict): continue
         inputs=node.get("inputs")
         if not isinstance(inputs,dict): continue
-        ctype=str(node.get("class_type","")).lower()
+        ctype=str(node.get("class_type","")).lower()\n\n        # Exported workflow may omit the MiniMax-H3 model subfolder.\n        if ctype=="vaeloader" and isinstance(inputs.get("vae_name"),str) and inputs["vae_name"].startswith("minimax_h3_"):\n            inputs["vae_name"]="MiniMax-H3/"+inputs["vae_name"]\n        if ctype=="unetloader" and isinstance(inputs.get("unet_name"),str) and inputs["unet_name"].startswith("minimax_h3_"):\n            inputs["unet_name"]="MiniMax-H3/"+inputs["unet_name"]\n        if ctype=="cliploader" and isinstance(inputs.get("clip_name"),str) and "minimax_h3" in inputs["clip_name"] and "/" not in inputs["clip_name"]:\n            inputs["clip_name"]="MiniMax-H3/"+inputs["clip_name"]
 
         # H3 conditioning node: prompt is direct, but resolution/length are links.
         if "minimaxh3" in ctype and "prompt" in inputs:
@@ -62,7 +62,7 @@ def build_h3_workflow(path,prompt,aspect_ratio="9:16",profile="Balanced",duratio
 
         # Actual exported T2V template controls dimensions here.
         if ctype=="resolutionselector":
-            inputs["aspect_ratio"]="9:16 (Portrait)" if aspect_ratio=="9:16" else "16:9 (Widescreen)"
+            inputs["aspect_ratio"]="9:16 (Portrait Widescreen)" if aspect_ratio=="9:16" else "16:9 (Widescreen)"
             # Keep the template's megapixel target; ResolutionSelector calculates valid multiples.
             changed["resolution"]+=1
 
